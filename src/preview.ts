@@ -54,15 +54,21 @@ export async function capturePreview(opts: {
     const page = await context.newPage();
     const consoleErrors: string[] = [];
     const failedRequests: string[] = [];
+    // Shopify's own platform assets (marketing fonts, payment widgets) sometimes fail on dev stores
+    // and are not part of the section being checked.
+    const platformNoise = /shopify-marketing_assets|\/shopifycloud\/|shop\.app|monorail|shopifysvc|\/cdn\/shop\/t\/\d+\/assets\/.*\.map/;
     page.on('console', (m) => {
-      if (m.type() === 'error') consoleErrors.push(m.text().slice(0, 200));
+      // "Failed to load resource" lines carry no URL; the request listeners below record them with one.
+      if (m.type() === 'error' && !/^Failed to load resource/.test(m.text())) consoleErrors.push(m.text().slice(0, 200));
     });
     page.on('pageerror', (e) => consoleErrors.push(String(e.message).slice(0, 200)));
     page.on('requestfailed', (r) => {
-      if (/image|font|stylesheet/.test(r.resourceType())) failedRequests.push(`${r.resourceType()} ${r.url().slice(0, 120)}`);
+      if (/image|font|stylesheet/.test(r.resourceType()) && !platformNoise.test(r.url())) {
+        failedRequests.push(`${r.resourceType()} ${r.url().slice(0, 120)}`);
+      }
     });
     page.on('response', (r) => {
-      if (r.status() >= 400 && /image|font|stylesheet/.test(r.request().resourceType())) {
+      if (r.status() >= 400 && /image|font|stylesheet/.test(r.request().resourceType()) && !platformNoise.test(r.url())) {
         failedRequests.push(`${r.status()} ${r.url().slice(0, 120)}`);
       }
     });

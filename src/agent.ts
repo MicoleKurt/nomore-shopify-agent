@@ -88,6 +88,7 @@ export async function runAgent(cfg: Config, outDir: string): Promise<RunResult> 
   let subtype = 'unknown';
   let ok = false;
 
+  try {
   for await (const msg of stream) {
     if (msg.type === 'assistant') {
       for (const block of msg.message.content) {
@@ -101,6 +102,12 @@ export async function runAgent(cfg: Config, outDir: string): Promise<RunResult> 
       ok = msg.subtype === 'success' && !msg.is_error;
       if (msg.subtype === 'success') console.log(`\n${msg.result}`);
     }
+  }
+  } catch (e) {
+    // The SDK throws on a hard stop such as the budget cap. Keep what was built and report it.
+    subtype = e instanceof Error ? e.message : String(e);
+    ok = false;
+    console.log(`\nStopped: ${subtype}`);
   }
 
   const url =
