@@ -1,0 +1,354 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700;900&family=Jost:wght@700&display=swap" rel="stylesheet">
+<style>
+[data-nomore-root]{--nm-bg:#f3f3f3;--nm-text:#000;font-family:Figtree,sans-serif;color:var(--nm-text);letter-spacing:.6px;line-height:1.4;width:100%;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+[data-nomore-root] *,[data-nomore-root] *::before,[data-nomore-root] *::after{box-sizing:border-box}
+[data-nomore-root] img{display:block;max-width:100%}
+[data-nomore-root] h1,[data-nomore-root] h2,[data-nomore-root] p{margin:0}
+[data-nomore-root] .nm-main{background:var(--nm-bg);padding:0 0 26px}
+[data-nomore-root] .nm-gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0;padding:0;list-style:none;scrollbar-width:none}
+[data-nomore-root] .nm-gallery::-webkit-scrollbar{display:none}
+[data-nomore-root] .nm-gallery li{flex:0 0 100%;scroll-snap-align:start}
+[data-nomore-root] .nm-gallery img{width:100%;aspect-ratio:1/1;object-fit:cover}
+[data-nomore-root] .nm-dots{display:flex;justify-content:center;gap:6px;margin-top:23px;height:10px}
+[data-nomore-root] .nm-dot{width:10px;height:10px;padding:0;border-radius:50%;border:1px solid #444;background:transparent;cursor:pointer}
+[data-nomore-root] .nm-dot.is-active{background:#000;border-color:#000}
+[data-nomore-root] .nm-pad{padding:0 15px}
+[data-nomore-root] .nm-rating{display:flex;align-items:center;margin-top:28px;height:21px;font-size:15px;color:rgba(0,0,0,.75)}
+[data-nomore-root] .nm-stars{color:var(--nm-accent,#d60200);font-size:16px;letter-spacing:0;margin-right:13px}
+[data-nomore-root] .nm-title{font-family:Jost,sans-serif;font-weight:700;font-size:30px;line-height:39px;margin-top:15px!important}
+[data-nomore-root] .nm-sub{font-size:14px;line-height:22.4px;font-weight:700;margin-top:5px!important;letter-spacing:0}
+[data-nomore-root] .nm-cure{text-align:center;font-weight:700;font-size:17px;line-height:30.6px;margin-top:8px!important}
+[data-nomore-root] .nm-cure-img{width:100%;height:90px;object-fit:contain;margin-top:4px}
+[data-nomore-root] .nm-bundle-head{display:flex;align-items:center;gap:14px;margin-top:20px;font-weight:700;font-size:14px;line-height:19.6px;white-space:nowrap}
+[data-nomore-root] .nm-bundle-head::before,[data-nomore-root] .nm-bundle-head::after{content:"";flex:1;height:1px;background:#8a8a8a}
+[data-nomore-root] .nm-bundles{margin-top:16px;display:flex;flex-direction:column;gap:12px}
+[data-nomore-root] .nm-bundle{display:block;position:relative;cursor:pointer}
+[data-nomore-root] .nm-bundle input{position:absolute;opacity:0;pointer-events:none}
+[data-nomore-root] .nm-card{display:flex;align-items:center;min-height:73px;padding:0 20px 0 16px;border:2px solid #d9d9d9;border-radius:8px;background:#fff;position:relative}
+[data-nomore-root] .nm-card.has-badge{min-height:87px}
+[data-nomore-root] .nm-bundle input:checked+.nm-card{background:var(--nm-sel,#f5dad5);border-color:#000}
+[data-nomore-root] .nm-radio{width:24px;height:24px;border-radius:50%;border:2px solid #8a8a8a;background:#fff;flex:none;margin-right:14px;position:relative}
+[data-nomore-root] .nm-bundle input:checked+.nm-card .nm-radio{border-color:#000}
+[data-nomore-root] .nm-bundle input:checked+.nm-card .nm-radio::after{content:"";position:absolute;inset:3px;border-radius:50%;background:#000}
+[data-nomore-root] .nm-btitle{font-size:20px;line-height:28px;font-weight:700;letter-spacing:0}
+[data-nomore-root] .nm-save{margin-left:8px;background:#000;color:#fff;font-size:12px;line-height:16.8px;font-weight:700;font-style:italic;padding:4px 9px;border-radius:8px;letter-spacing:0;white-space:nowrap}
+[data-nomore-root] .nm-prices{margin-left:auto;text-align:right}
+[data-nomore-root] .nm-price{font-size:20px;line-height:28px;font-weight:700;letter-spacing:0}
+[data-nomore-root] .nm-compare{font-size:14px;line-height:19.6px;color:#d60200;text-decoration:line-through;letter-spacing:0}
+[data-nomore-root] .nm-badge{position:absolute;top:-11px;right:14px;height:24px;padding:0 14px;display:flex;align-items:center;background:var(--nm-badge,#e02b20);color:#fff;font-size:12px;font-weight:700;border-radius:3px;letter-spacing:0}
+[data-nomore-root] .nm-gifts-title{text-align:center;font-weight:900;font-size:20px;line-height:28px;margin-top:17px!important}
+[data-nomore-root] .nm-gifts-sub{text-align:center;font-size:16px;line-height:22.4px;margin-top:0!important}
+[data-nomore-root] .nm-gifts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+[data-nomore-root] .nm-gift{position:relative;border:2px solid #000;border-radius:8px;background:var(--nm-sel,#f5dad5);padding:12px 8px 6px;text-align:center}
+[data-nomore-root] .nm-gift.is-locked{background:#f6f6f6;border:1px solid #cfcfcf}
+[data-nomore-root] .nm-tag{position:absolute;top:-7px;left:50%;transform:translateX(-50%);height:24px;padding:0 8px;display:flex;align-items:center;gap:6px;background:#000;color:#fff;font-size:12px;font-weight:500;border-radius:6px;white-space:nowrap}
+[data-nomore-root] .nm-gimg,[data-nomore-root] .nm-lock{width:93px;height:93px;margin:2px auto 0;object-fit:contain}
+[data-nomore-root] .nm-lock{display:flex;align-items:center;justify-content:center;color:#66728f}
+[data-nomore-root] .nm-gname{margin-top:9px;font-size:14px;line-height:19.6px;font-weight:500}
+[data-nomore-root] .nm-gift.is-locked .nm-gname{color:#555}
+[data-nomore-root] .nm-atc{display:block;width:100%;height:49px;margin-top:24px;border:0;border-radius:10px;background:linear-gradient(180deg,var(--nm-btn1,#e8100f),var(--nm-btn2,#bd0000));color:#fff;font-family:inherit;font-size:21px;font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,.35)}
+[data-nomore-root] .nm-guar{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:15px;font-weight:700;font-size:14px;line-height:25.2px;color:rgba(0,0,0,.75)}
+[data-nomore-root] .nm-guar svg{color:#e02b20}
+[data-nomore-root] .nm-reviews-wrap{position:relative;width:336px;margin:22px auto 0}
+[data-nomore-root] .nm-reviews{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+[data-nomore-root] .nm-reviews::-webkit-scrollbar{display:none}
+[data-nomore-root] .nm-review{flex:0 0 336px;scroll-snap-align:start;display:flex;gap:12px;background:#fff;border-radius:10px;padding:11px 8px;height:117px}
+[data-nomore-root] .nm-review img{width:56px;height:74px;object-fit:cover;border-radius:6px;margin-top:12px;flex:none}
+[data-nomore-root] .nm-rname{font-size:13px;line-height:16.9px;font-weight:700}
+[data-nomore-root] .nm-rstars{font-size:13px;letter-spacing:1px;margin-left:5px;font-weight:400}
+[data-nomore-root] .nm-rtext{font-size:12px;line-height:15.6px;margin-top:4px!important;letter-spacing:.6px}
+[data-nomore-root] .nm-rbody{flex:1;min-width:0}
+[data-nomore-root] .nm-next{position:absolute;right:-6px;top:50%;margin-top:-14px;width:28px;height:28px;border-radius:50%;border:0;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+[data-nomore-root] .nm-s2{background:var(--nm-s2bg,#f3f3f3);padding-bottom:40px}
+[data-nomore-root] .nm-s2 img{width:100%;aspect-ratio:1/1;object-fit:cover}
+[data-nomore-root] .nm-s2-h{font-family:Jost,sans-serif;font-weight:700;font-size:27.5px;line-height:35.75px;margin:34px 32px 0!important;color:transparent;background:linear-gradient(90deg,var(--nm-g1,#d12f1a),var(--nm-g2,#ff7b6b));-webkit-background-clip:text;background-clip:text;letter-spacing:.6px}
+[data-nomore-root] .nm-s2-b{margin:20px 32px 0;font-size:15px;line-height:27px}
+[data-nomore-root] .nm-s2-b p{margin:0 0 10px!important}
+[data-nomore-root] .nm-s2-b p:last-child{margin-bottom:0!important}
+[data-nomore-root] .nm-s3{background:var(--nm-s3bg,#fff);padding:60px 16px;text-align:center}
+[data-nomore-root] .nm-pct{display:flex;justify-content:center;gap:13px;font-weight:900;font-size:60px;line-height:60px;letter-spacing:-1.2px;margin:0!important}
+[data-nomore-root] .nm-pct span{color:transparent;background:linear-gradient(90deg,var(--nm-g1,#d12f1a),var(--nm-g2,#ff7b6b));-webkit-background-clip:text;background-clip:text}
+[data-nomore-root] .nm-pct-text{margin-top:24px!important;font-weight:700;font-size:18px;line-height:32.4px}
+</style>
+
+<div data-nomore-root style="--nm-bg:{{ section.settings.bg }};--nm-text:{{ section.settings.text_color }};--nm-accent:{{ section.settings.accent }};--nm-sel:{{ section.settings.selected_bg }};--nm-badge:{{ section.settings.badge_bg }};--nm-btn1:{{ section.settings.btn_1 }};--nm-btn2:{{ section.settings.btn_2 }};--nm-g1:{{ section.settings.grad_1 }};--nm-g2:{{ section.settings.grad_2 }};--nm-s2bg:{{ section.settings.s2_bg }};--nm-s3bg:{{ section.settings.s3_bg }}">
+  {%- assign variant = product.selected_or_first_available_variant -%}
+  <section class="nm-main">
+    <ul class="nm-gallery" data-nm-gallery>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'slide' -%}
+          {%- assign src = block.settings.image_url -%}
+          {%- if block.settings.image != blank -%}{%- assign src = block.settings.image | image_url: width: 800 -%}{%- endif -%}
+          <li {{ block.shopify_attributes }}><img src="{{ src }}" alt="{{ block.settings.alt }}"></li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+    <div class="nm-dots">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'slide' -%}
+          <button type="button" class="nm-dot{% if forloop.first %} is-active{% endif %}" data-nm-dot aria-label="{{ section.settings.dot_label }} {{ forloop.index }}"></button>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="nm-pad">
+      <div class="nm-rating"><span class="nm-stars">{{ section.settings.rating_stars }}</span><span>{{ section.settings.rating_text }}</span></div>
+      <h1 class="nm-title">{{ section.settings.title }}</h1>
+      <p class="nm-sub">{{ section.settings.subtitle }}</p>
+      <p class="nm-cure">{{ section.settings.cure_heading }}</p>
+      {%- assign csrc = section.settings.cure_image_url -%}
+      {%- if section.settings.cure_image != blank -%}{%- assign csrc = section.settings.cure_image | image_url: width: 800 -%}{%- endif -%}
+      <img class="nm-cure-img" src="{{ csrc }}" alt="{{ section.settings.cure_image_alt }}">
+
+      <div class="nm-bundle-head">{{ section.settings.bundle_heading }}</div>
+
+      {%- form 'product', product -%}
+        <input type="hidden" name="id" value="{{ variant.id }}">
+        <div class="nm-bundles">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'bundle' -%}
+              <label class="nm-bundle" {{ block.shopify_attributes }}>
+                <input type="radio" name="nm-bundle"{% if block.settings.selected %} checked{% endif %}>
+                <span class="nm-card{% if block.settings.badge != blank %} has-badge{% endif %}">
+                  {%- if block.settings.badge != blank -%}<span class="nm-badge">{{ block.settings.badge }}</span>{%- endif -%}
+                  <span class="nm-radio"></span>
+                  <span class="nm-btitle">{{ block.settings.title }}</span>
+                  <span class="nm-save">{{ block.settings.save_text }}</span>
+                  <span class="nm-prices"><span class="nm-price" style="display:block">{{ block.settings.price }}</span><span class="nm-compare" style="display:block">{{ block.settings.compare_price }}</span></span>
+                </span>
+              </label>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <p class="nm-gifts-title">{{ section.settings.gifts_title }}</p>
+        <p class="nm-gifts-sub">{{ section.settings.gifts_subtitle }}</p>
+        <div class="nm-gifts">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'gift' -%}
+              {%- assign gsrc = block.settings.image_url -%}
+              {%- if block.settings.image != blank -%}{%- assign gsrc = block.settings.image | image_url: width: 400 -%}{%- endif -%}
+              <div class="nm-gift{% if block.settings.locked %} is-locked{% endif %}" {{ block.shopify_attributes }}>
+                <span class="nm-tag"><span>{{ block.settings.tag_text }}</span><s>{{ block.settings.tag_price }}</s></span>
+                {%- if block.settings.locked -%}
+                  <span class="nm-lock"><svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor"><path d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V7z"/></svg></span>
+                {%- else -%}
+                  <img class="nm-gimg" src="{{ gsrc }}" alt="{{ block.settings.alt }}">
+                {%- endif -%}
+                <div class="nm-gname">{{ block.settings.name }}</div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <button type="submit" class="nm-atc">{{ section.settings.button_label }}</button>
+      {%- endform -%}
+      <div class="nm-guar"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.5 14.5-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z"/></svg><span>{{ section.settings.guarantee_text }}</span></div>
+    </div>
+
+    <div class="nm-reviews-wrap">
+      <div class="nm-reviews" data-nm-reviews>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'review' -%}
+            {%- assign rsrc = block.settings.image_url -%}
+            {%- if block.settings.image != blank -%}{%- assign rsrc = block.settings.image | image_url: width: 300 -%}{%- endif -%}
+            <div class="nm-review" {{ block.shopify_attributes }}>
+              <img src="{{ rsrc }}" alt="{{ block.settings.alt }}">
+              <div class="nm-rbody">
+                <div><span class="nm-rname">{{ block.settings.name }}</span><span class="nm-rstars">{{ block.settings.stars }}</span></div>
+                <p class="nm-rtext">{{ block.settings.text }}</p>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <button type="button" class="nm-next" data-nm-next aria-label="{{ section.settings.next_label }}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#000" stroke-width="3"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+  </section>
+
+  <section class="nm-s2">
+    {%- assign s2src = section.settings.s2_image_url -%}
+    {%- if section.settings.s2_image != blank -%}{%- assign s2src = section.settings.s2_image | image_url: width: 800 -%}{%- endif -%}
+    <img src="{{ s2src }}" alt="{{ section.settings.s2_image_alt }}">
+    <h2 class="nm-s2-h">{{ section.settings.s2_heading }}</h2>
+    <div class="nm-s2-b">{{ section.settings.s2_body }}</div>
+  </section>
+
+  <section class="nm-s3">
+    <h2 class="nm-pct"><span data-nm-counter data-target="{{ section.settings.counter_value }}">{{ section.settings.counter_value }}</span><span>{{ section.settings.counter_suffix }}</span></h2>
+    <p class="nm-pct-text">{{ section.settings.counter_caption }}</p>
+  </section>
+
+  <script>
+  (function(){
+    var root=document.currentScript.closest('[data-nomore-root]');
+    if(!root)return;
+    var g=root.querySelector('[data-nm-gallery]'),dots=root.querySelectorAll('[data-nm-dot]');
+    if(g){
+      g.addEventListener('scroll',function(){
+        var i=Math.round(g.scrollLeft/g.clientWidth);
+        dots.forEach(function(d,k){d.classList.toggle('is-active',k===i);});
+      },{passive:true});
+      dots.forEach(function(d,k){d.addEventListener('click',function(){g.scrollTo({left:k*g.clientWidth,behavior:'smooth'});});});
+    }
+    var r=root.querySelector('[data-nm-reviews]'),n=root.querySelector('[data-nm-next]');
+    if(r&&n){n.addEventListener('click',function(){
+      if(r.scrollLeft+r.clientWidth>=r.scrollWidth-4){r.scrollTo({left:0,behavior:'smooth'});}
+      else{r.scrollBy({left:r.clientWidth,behavior:'smooth'});}
+    });}
+    var c=root.querySelector('[data-nm-counter]');
+    if(c){
+      var t=parseFloat(c.getAttribute('data-target'))||0,done=false;
+      var run=function(){
+        if(done)return;done=true;
+        var s=null,d=1600;
+        var step=function(ts){
+          if(s===null)s=ts;
+          var p=Math.min((ts-s)/d,1);
+          c.textContent=Math.round(t*(1-Math.pow(1-p,3)));
+          if(p<1)requestAnimationFrame(step);else c.textContent=t;
+        };
+        requestAnimationFrame(step);
+      };
+      if('IntersectionObserver' in window){
+        c.textContent='0';
+        var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){run();o.disconnect();}});},{threshold:.4});
+        o.observe(c);
+      }
+    }
+  })();
+  </script>
+</div>
+
+{% schema %}
+{
+  "name": "NoMore Landing",
+  "settings": [
+    {"type":"header","content":"Colors"},
+    {"type":"color","id":"bg","label":"Product section background","default":"#f3f3f3"},
+    {"type":"color","id":"text_color","label":"Text color","default":"#000000"},
+    {"type":"color","id":"accent","label":"Stars color","default":"#d60200"},
+    {"type":"color","id":"selected_bg","label":"Selected card background","default":"#f5dad5"},
+    {"type":"color","id":"badge_bg","label":"Badge background","default":"#e02b20"},
+    {"type":"color","id":"btn_1","label":"Button gradient top","default":"#e8100f"},
+    {"type":"color","id":"btn_2","label":"Button gradient bottom","default":"#bd0000"},
+    {"type":"color","id":"grad_1","label":"Heading gradient start","default":"#d12f1a"},
+    {"type":"color","id":"grad_2","label":"Heading gradient end","default":"#ff7b6b"},
+    {"type":"color","id":"s2_bg","label":"Story section background","default":"#f3f3f3"},
+    {"type":"color","id":"s3_bg","label":"Counter section background","default":"#ffffff"},
+    {"type":"header","content":"Product info"},
+    {"type":"text","id":"dot_label","label":"Gallery dot label","default":"Go to slide"},
+    {"type":"text","id":"rating_stars","label":"Rating stars","default":"★★★★★"},
+    {"type":"text","id":"rating_text","label":"Rating text","default":"4.66 Based on 1358 reviews"},
+    {"type":"text","id":"title","label":"Title","default":"NoMore® Colds"},
+    {"type":"textarea","id":"subtitle","label":"Subtitle","default":"Vanquish colds and sinusitis naturally in 24-hour... a liberating, medicine-free revival!!"},
+    {"type":"text","id":"cure_heading","label":"Benefits heading","default":"WHAT CAN IT CURE?"},
+    {"type":"image_picker","id":"cure_image","label":"Benefits image"},
+    {"type":"text","id":"cure_image_url","label":"Benefits image fallback URL","default":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/No_More_Colds_67048029-acf2-4046-af7e-a6e219edc698.png?v=1707735016"},
+    {"type":"text","id":"cure_image_alt","label":"Benefits image alt","default":"NoMore® device benefits: No More Sinusitis, No More Colds, No More Allergies, Safe with no side effects"},
+    {"type":"text","id":"bundle_heading","label":"Bundle heading","default":"BUY MORE - SAVE MORE"},
+    {"type":"text","id":"gifts_title","label":"Gifts title","default":"Free Gifts with your Order"},
+    {"type":"text","id":"gifts_subtitle","label":"Gifts subtitle","default":"Unlock selecting a higher Bundle"},
+    {"type":"text","id":"button_label","label":"Add to cart label","default":"Add to cart"},
+    {"type":"text","id":"guarantee_text","label":"Guarantee text","default":"60-DAY MONEY BACK GUARANTEE"},
+    {"type":"text","id":"next_label","label":"Next review button label","default":"Next review"},
+    {"type":"header","content":"Story section"},
+    {"type":"image_picker","id":"s2_image","label":"Story image"},
+    {"type":"text","id":"s2_image_url","label":"Story image fallback URL","default":"https://try-nomore.com/cdn/shop/files/immagini_prodotto_Nomorecolds_4.png?v=1702918568&width=360"},
+    {"type":"text","id":"s2_image_alt","label":"Story image alt","default":"NoMore® Colds red light therapy device with glowing nasal adapters, offering relief from sore throat, colds, allergies, and sinusitis"},
+    {"type":"text","id":"s2_heading","label":"Story heading","default":"Are you struggling with persistent colds, sinusitis or allergies?"},
+    {"type":"richtext","id":"s2_body","label":"Story text","default":"<p>No worries!<strong> NoMore®</strong>, powered by advanced <strong>Red Light Therapy</strong>, is your<strong> quick and effective solution</strong> for <strong>colds and sinusitis relief</strong></p><p><strong>In just 10 minutes a day</strong>, it will:</p><p><strong>🎯 </strong>Target and <strong>alleviate </strong>common<strong> cold and sinusitis symptoms</strong></p><p><strong>❤️ </strong>Promote relaxation and<strong> provide relief</strong></p><p><strong>⚡️ Easy application</strong> on the nasal area</p>"},
+    {"type":"header","content":"Counter section"},
+    {"type":"number","id":"counter_value","label":"Counter final number","default":100},
+    {"type":"text","id":"counter_suffix","label":"Counter suffix","default":"%"},
+    {"type":"text","id":"counter_caption","label":"Counter caption","default":"Safe solution without side-effects"}
+  ],
+  "blocks": [
+    {"type":"slide","name":"Gallery slide","settings":[
+      {"type":"image_picker","id":"image","label":"Image"},
+      {"type":"text","id":"image_url","label":"Fallback image URL"},
+      {"type":"text","id":"alt","label":"Alt text"}
+    ]},
+    {"type":"bundle","name":"Bundle card","settings":[
+      {"type":"text","id":"title","label":"Title"},
+      {"type":"text","id":"save_text","label":"Save label"},
+      {"type":"text","id":"price","label":"Price"},
+      {"type":"text","id":"compare_price","label":"Compare price"},
+      {"type":"text","id":"badge","label":"Badge"},
+      {"type":"checkbox","id":"selected","label":"Selected by default","default":false}
+    ]},
+    {"type":"gift","name":"Free gift","settings":[
+      {"type":"image_picker","id":"image","label":"Image"},
+      {"type":"text","id":"image_url","label":"Fallback image URL"},
+      {"type":"text","id":"alt","label":"Alt text"},
+      {"type":"text","id":"name","label":"Name"},
+      {"type":"text","id":"tag_text","label":"Tag text"},
+      {"type":"text","id":"tag_price","label":"Tag price"},
+      {"type":"checkbox","id":"locked","label":"Locked","default":false}
+    ]},
+    {"type":"review","name":"Review","settings":[
+      {"type":"text","id":"name","label":"Name"},
+      {"type":"text","id":"stars","label":"Stars"},
+      {"type":"textarea","id":"text","label":"Review text"},
+      {"type":"image_picker","id":"image","label":"Photo"},
+      {"type":"text","id":"image_url","label":"Fallback photo URL"},
+      {"type":"text","id":"alt","label":"Photo alt"}
+    ]}
+  ],
+  "presets": [
+    {
+      "name": "NoMore Landing",
+      "settings": {
+        "bg":"#f3f3f3","text_color":"#000000","accent":"#d60200","selected_bg":"#f5dad5","badge_bg":"#e02b20","btn_1":"#e8100f","btn_2":"#bd0000","grad_1":"#d12f1a","grad_2":"#ff7b6b","s2_bg":"#f3f3f3","s3_bg":"#ffffff",
+        "dot_label":"Go to slide",
+        "rating_stars":"★★★★★",
+        "rating_text":"4.66 Based on 1358 reviews",
+        "title":"NoMore® Colds",
+        "subtitle":"Vanquish colds and sinusitis naturally in 24-hour... a liberating, medicine-free revival!!",
+        "cure_heading":"WHAT CAN IT CURE?",
+        "cure_image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/No_More_Colds_67048029-acf2-4046-af7e-a6e219edc698.png?v=1707735016",
+        "cure_image_alt":"NoMore® device benefits: No More Sinusitis, No More Colds, No More Allergies, Safe with no side effects",
+        "bundle_heading":"BUY MORE - SAVE MORE",
+        "gifts_title":"Free Gifts with your Order",
+        "gifts_subtitle":"Unlock selecting a higher Bundle",
+        "button_label":"Add to cart",
+        "guarantee_text":"60-DAY MONEY BACK GUARANTEE",
+        "next_label":"Next review",
+        "s2_image_url":"https://try-nomore.com/cdn/shop/files/immagini_prodotto_Nomorecolds_4.png?v=1702918568&width=360",
+        "s2_image_alt":"NoMore® Colds red light therapy device with glowing nasal adapters, offering relief from sore throat, colds, allergies, and sinusitis",
+        "s2_heading":"Are you struggling with persistent colds, sinusitis or allergies?",
+        "s2_body":"<p>No worries!<strong> NoMore®</strong>, powered by advanced <strong>Red Light Therapy</strong>, is your<strong> quick and effective solution</strong> for <strong>colds and sinusitis relief</strong></p><p><strong>In just 10 minutes a day</strong>, it will:</p><p><strong>🎯 </strong>Target and <strong>alleviate </strong>common<strong> cold and sinusitis symptoms</strong></p><p><strong>❤️ </strong>Promote relaxation and<strong> provide relief</strong></p><p><strong>⚡️ Easy application</strong> on the nasal area</p>",
+        "counter_value":100,
+        "counter_suffix":"%",
+        "counter_caption":"Safe solution without side-effects"
+      },
+      "blocks": [
+        {"type":"slide","settings":{"image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/NoMore_PDP_Images_20.png?v=1784649197","alt":"NoMore® Colds"}},
+        {"type":"slide","settings":{"image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/immaginiprodottoNomorecolds_9_-min-538514.webp?v=1767781861","alt":"Five reasons to try NoMore® Colds red light nasal therapy device: fast relief in under 10 minutes, boosts natural healing, drug-free solution, saves money, and 90-day money back guarantee"}},
+        {"type":"slide","settings":{"image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/NoMore_Colds_Images_5.webp?v=1771950956","alt":"Two people using NoMore® Colds red light therapy device in their noses. Defeat colds and sinusitis naturally in 24 hours."}},
+        {"type":"slide","settings":{"image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/NoMore_Colds_Images_2-min.webp?v=1767781861","alt":"Collage of satisfied customers using NoMore® Colds red light nasal therapy device for sinus and flu relief, with five-star review calling it a lifesaver during flu season"}},
+        {"type":"slide","settings":{"image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/NoMore_Colds_Images_6-_1.webp?v=1767781861","alt":"Female doctor holding NoMore® red light therapy device. Our efforts for your health, 100% safe and without side effects"}},
+        {"type":"slide","settings":{"image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/NoMore_Colds_Images_7.webp?v=1767781662","alt":"Woman using NoMore® Colds red light therapy device in her nose, glowing with red light"}},
+        {"type":"slide","settings":{"image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/immaginiprodottoNomorecolds_8_-min.webp?v=1767781662","alt":"Real customer results with NoMore® Colds red light nasal therapy device shown in a collage of verified buyers using it for sinus relief and flu prevention"}},
+        {"type":"slide","settings":{"image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/NoMore_Colds_Images_3.webp?v=1767781662","alt":"Before and after results with NoMore® Colds red light nasal therapy device showing customer relief from congestion"}},
+        {"type":"slide","settings":{"image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/nomorecoldspackagingredlighttherapydevicetobeatsinusitisandcolds-433342_11zon-482768.webp?v=1763718452","alt":"NoMoreColds Red Light Therapy device and packaging with black handheld device in front"}},
+        {"type":"slide","settings":{"image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/50-911483_11zon-727416.webp?v=1763718452","alt":"NoMoreColds Red Light Therapy bundle with two boxes and device"}},
+        {"type":"slide","settings":{"image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/52-124301_11zon-866206.webp?v=1763718452","alt":"NoMoreColds Red Light Therapy 4-pack bundle with device"}},
+        {"type":"bundle","settings":{"title":"1 Device","save_text":"SAVE $80.10","price":"$39.90","compare_price":"$120.00","badge":"","selected":false}},
+        {"type":"bundle","settings":{"title":"2 Devices","save_text":"SAVE $180.10","price":"$29.95","compare_price":"$120.00","badge":"MOST POPULAR","selected":true}},
+        {"type":"bundle","settings":{"title":"3 Devices","save_text":"SAVE $280.10","price":"$26.64","compare_price":"$120.00","badge":"BEST VALUE","selected":false}},
+        {"type":"gift","settings":{"image_url":"https://try-nomore.com/cdn/shop/files/A-Quadrato-2025-10-20T175605.090-min.png?height=200&v=1763734324","alt":"Official NoMore App with AI","name":"Official NoMore App with AI","tag_text":"FREE","tag_price":"$20.00","locked":false}},
+        {"type":"gift","settings":{"image_url":"https://try-nomore.com/cdn/shop/files/A-Quadrato-2025-10-21T095533.508-min.png?height=200&v=1761641388","alt":"Extra Nasal Adapters","name":"Medical-Grade Silicone Nasal Inserts","tag_text":"FREE","tag_price":"$10.00","locked":false}},
+        {"type":"gift","settings":{"image_url":"","alt":"","name":"Locked","tag_text":"FREE","tag_price":"$15.00","locked":true}},
+        {"type":"review","settings":{"name":"Eric Spear","stars":"★★★★★","text":"Bought a 4 pack to share with the family. Mine works great so far. Already gave them to the family and they love them. Solved my wife's and kid's allergies completely. Best purchase we've made!","image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/Progetto_senza_titolo_9_-min.jpg?v=1744384362","alt":"Eric Spear review photo"}},
+        {"type":"review","settings":{"name":"Joyce Simmons","stars":"★★★★★","text":"My husband caught a cold driving school buses. He barely used his and got sick, but I used mine regularly and stayed healthy! My son loves it for allergies too. Buying more for family and friends!","image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/3-min_2.jpg?v=1744384362","alt":"Joyce Simmons review photo"}},
+        {"type":"review","settings":{"name":"Kevin Lannoo","stars":"★★★★★","text":"Bought devices for me, my wife, and stepdaughters for Christmas. Tried mine first—felt relief after just 10 min! Wife and girls were skeptical at first, but hopeful it'll help their allergies too.","image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/Progetto_senza_titolo_10_-min.jpg?v=1744384362","alt":"Kevin Lannoo review photo"}},
+        {"type":"review","settings":{"name":"Robert Amitrano","stars":"★★★★★","text":"Retired physician here. Helped my post-nasal drip a lot! Bought more for my wife and son. Excited to see how it handles winter colds. Highly recommend!","image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/Progetto_senza_titolo_11_-min.jpg?v=1744384362","alt":"Robert Amitrano review photo"}},
+        {"type":"review","settings":{"name":"Michelle Bloom","stars":"★★★★★","text":"Was skeptical at first, but my husband and I tried it after spending lots on sinus meds. After one month, no more Advil! Stayed healthy even when my husband got sick. Great results!","image_url":"https://cdn.shopify.com/s/files/1/0779/9488/5450/files/Progetto_senza_titolo_12_-min.jpg?v=1744384362","alt":"Michelle Bloom review photo"}}
+      ]
+    }
+  ]
+}
+{% endschema %}

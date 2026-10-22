@@ -1,124 +1,127 @@
+<div align="center">
+
 # nomore-shopify-agent
 
-A script built on the **Claude Agent SDK** that takes a product-page URL and rebuilds its first three
-sections as **one Liquid section** in a Shopify test store, matching the original as closely as it can on a
-phone-size screen. Every text and every image is editable in the theme editor; nothing is hardcoded.
+**A Claude Agent SDK script that rebuilds a live landing page as one editable Shopify Liquid section, and checks its own work pixel by pixel.**
 
-```
-npm run run
-```
+![Claude Agent SDK](https://img.shields.io/badge/Claude_Agent_SDK-TypeScript-6d5dfc?style=flat-square)
+![Shopify](https://img.shields.io/badge/Shopify-Liquid_section-5eead4?style=flat-square&labelColor=0b0f17)
+![Tests](https://img.shields.io/badge/tests-71_passing-3fb950?style=flat-square)
+![Hardcoded content](https://img.shields.io/badge/hardcoded_content-0-60a5fa?style=flat-square)
+![Mobile diff](https://img.shields.io/badge/mobile_pixel_diff-4.67%25-f59e0b?style=flat-square)
 
-## What it builds
+<img src="docs/hero.png" alt="Original page, agent-built page and pixel difference, side by side at 390px" width="100%">
 
-For `https://try-nomore.com/products/nomorecolds-red-light-therapy-colds-sinusitis` the first three
-sections at 390 px are:
+<sub>Left: the original page. Middle: the section the agent built in a Shopify dev store. Right: where the pixels differ. All at 390px, from a real run.</sub>
 
-1. the product hero (gallery, title, rating, benefits, bundle cards with their prices, add to cart),
-2. the "Are you struggling with…" image-with-text section,
-3. the "100%" counter band.
+</div>
 
-The result is `sections/nomore-landing.liquid`, rendered by an alternate product template
-(`templates/product.nomore.json`) assigned to a simple placeholder product (one variant, one image). The
-purchase logic is deliberately plain, since every bundle card adds the placeholder variant, but the look of
-the hero is rebuilt, and the bundle cards, prices and labels are editable blocks and text settings.
+---
+
+## At a glance
+
+| | |
+|---|---|
+| **Input** | One product-page URL |
+| **Output** | `sections/nomore-landing.liquid` plus a product template, uploaded to a Shopify theme |
+| **Scope** | The first 3 sections: product hero with bundle cards, "Are you struggling…" block, 100% counter band |
+| **Editable** | Every text and every image is a theme-editor setting. A linter rejects the upload otherwise |
+| **Accuracy** | **4.67%** pixel difference from the original at 390px (target: 8% or less) |
+| **Run** | 2 uploads, 13 turns, estimated cost about $2.36 |
+
+The page is not copied. The agent reads the original at phone width, builds the section, renders it in a real store, and keeps fixing the biggest visual differences until the two match.
+
+<details>
+<summary><b>See the whole page, top to bottom</b></summary>
+<br>
+<img src="docs/full-comparison.png" alt="Full-length comparison" width="100%">
+</details>
 
 ## How it works
 
-```
-                 +---------------------------+
- URL ----------> |  Claude (Agent SDK query) |  only the 7 tools below exist:
-                 +-------------+-------------+  no shell, no files, no web
-                               |
-   inspect_source -------------+--> Playwright @390px: texts + computed styles, images, HTML, screenshots
-   get_theme_state ------------+--> Admin API: pick the theme, see what already exists
-   create_placeholder_product -+--> Admin API productSet (idempotent) + publish to Online Store
-   write_section --------------+--> LINT, then upload section + generated JSON template
-   screenshot_preview ---------+--> Playwright on the store preview (password handled)
-   compare_preview ------------+--> pixelmatch vs. the original, per-300px bands + side-by-side strips
-   verify_final ---------------+--> final checks, out/report.json
-```
+<img src="docs/architecture.svg" alt="Architecture: URL, Claude Agent SDK loop, seven tools, Playwright and Shopify Admin API" width="100%">
 
-The model sees the original and its own result as images and as numbers, edits, and repeats.
+The model can only act through seven tools. It has no shell, no file access and no web access.
 
-**Design decisions**
+| Tool | What it does |
+|---|---|
+| `inspect_source` | Loads the original at 390px: texts with computed styles, image URLs, cleaned HTML, a screenshot of each section |
+| `get_theme_state` | Picks the theme and reports which files already exist |
+| `create_placeholder_product` | Idempotent product upsert on a fixed handle, published to the Online Store |
+| `write_section` | **Lints first**, then uploads the section and a template generated from its preset |
+| `screenshot_preview` | Renders the store preview at 390px after images, reveals and counters settle |
+| `compare_preview` | Pixel diff against the original, with per-band numbers and side-by-side strips |
+| `verify_final` | Final checks, written to `out/report.json` |
 
-- **A linter is the "no hardcoded content" guarantee.** `write_section` rejects the upload, with exact
-  reasons, if a visible string, alt text, label, image URL or `url()` is not coming from a setting, if a
-  referenced setting is not in the schema, if the schema has no `presets[0]`, or if the Liquid is
-  unbalanced. The model cannot upload a section that breaks the brief.
-- **Defaults live in `presets[0]`, and the template is generated from it.** JSON templates do not copy a
-  preset's blocks on their own, so the script builds `product.nomore.json` from the preset. The theme
-  editor then opens with all default copy and images in place, all editable.
-- **Images** are `image_picker` settings with a text setting holding the original CDN URL as fallback, so the
-  page renders before anything is uploaded and each image can still be replaced in the editor.
-- **Bounded loop.** Max 40 turns, a hard `maxBudgetUsd`, and a `PreToolUse` hook that denies `write_section`
-  after 6 uploads. It stops as soon as the pixel difference is at or below 8 %.
-- **Safe to re-run.** The placeholder product is an upsert on a fixed handle, never a duplicate. Theme pushes
-  only touch the two files and never delete anything.
+### Design decisions
+
+- **The linter is the "no hardcoded content" guarantee.** `write_section` rejects an upload, with exact reasons, if a visible string, alt text, label, image URL or CSS `url()` is not coming from a setting, if a referenced setting is missing from the schema, if `presets[0]` is absent, or if the Liquid is unbalanced.
+- **Defaults live in `presets[0]`, and the template is generated from it.** JSON templates do not copy a preset's blocks on their own, so the script builds `product.nomore.json` itself. The theme editor opens with all default copy and images in place.
+- **Images are `image_picker` settings with a URL fallback**, so the page renders immediately and each image can still be replaced in the editor.
+- **The loop is bounded.** Max 40 turns, a hard `maxBudgetUsd`, and a `PreToolUse` hook that denies `write_section` after 6 uploads.
+- **Safe to re-run.** The product is an upsert, never a duplicate. Theme pushes only touch two files and never delete anything.
 - **Stale-screenshot guard.** A comparison is refused if the screenshot belongs to an older upload.
-- **Cost is reported** from the SDK's `total_cost_usd` at the end of every run, and written to
-  `out/run-summary.json`.
+- **Two upload routes.** Shopify gates theme writes behind an exemption for some apps, so `THEME_WRITER=auto` tries the Admin API and falls back to `shopify theme push`.
 
-## Setup
+## Quick start
 
-You need a Shopify dev store, an Anthropic API key, and Node 20.12 or newer.
+You need Node 20.12 or newer, a Shopify dev store, and either an Anthropic API key or a signed-in Claude Code.
 
-```
+```powershell
+git clone https://github.com/MicoleKurt/nomore-shopify-agent
+cd nomore-shopify-agent
 npm install
 npx playwright install chromium
-copy .env.example .env      # then fill it in
+copy .env.example .env
+npm run run
 ```
 
-### Shopify
+<details>
+<summary><b>Shopify setup (about 5 minutes)</b></summary>
+<br>
 
-1. **Dev store.** Create one in your Shopify Partners / Dev Dashboard account. Set a storefront password
-   (Online Store > Preferences) and put it in `SHOPIFY_STORE_PASSWORD`.
-2. **Admin API access.** Since 1 January 2026 new apps are created in the **Dev Dashboard**
-   (dev.shopify.com/dashboard): create an app, give a version these scopes, release it, and install it on
-   the dev store:
+1. **Dev store.** Create one in your Partners or Dev Dashboard account, and set a storefront password under Online Store → Preferences. It goes in `SHOPIFY_STORE_PASSWORD`.
+2. **App.** Since 1 January 2026 new apps are created in the [Dev Dashboard](https://dev.shopify.com/dashboard). Create an app with these scopes, release a version, and install it on the store:
 
    `read_themes, write_themes, read_products, write_products, read_publications, write_publications`
 
-   Copy the app's **Client ID** and **Client secret** (Settings) into `SHOPIFY_CLIENT_ID` and
-   `SHOPIFY_CLIENT_SECRET`. The script exchanges them for a 24-hour token on start-up. An older `shpat_`
-   token in `SHOPIFY_ADMIN_TOKEN` also works.
-3. **Theme uploads.** Shopify only lets apps with an exemption write theme files through the Admin API, and
-   it answers `ACCESS_DENIED` otherwise. With `THEME_WRITER=auto` (default) the script tries the Admin API
-   and, if refused, switches to `shopify theme push`. For that route install the free **Theme Access** app in
-   the store, create a password and put it in `SHOPIFY_THEME_PASSWORD` (or run
-   `shopify theme list --store <store>` once to log the CLI in). The CLI is used from your PATH, or fetched
-   with `npx`.
+3. **Credentials.** Copy the app's Client ID and Client secret into `SHOPIFY_CLIENT_ID` and `SHOPIFY_CLIENT_SECRET`. The script swaps them for a 24-hour token at start-up. An older `shpat_` token in `SHOPIFY_ADMIN_TOKEN` also works.
+4. **Only if theme uploads are refused:** install the free Theme Access app, create a password, and set `SHOPIFY_THEME_PASSWORD`. The script then uses the Shopify CLI automatically.
 
-### Anthropic
+</details>
 
-Put your key in `ANTHROPIC_API_KEY`. `MAX_BUDGET_USD` (default 4) is a hard stop for the whole run.
+<details>
+<summary><b>Authentication and cost</b></summary>
+<br>
 
-## Run
+Set `ANTHROPIC_API_KEY` to bill an API account. If it is blank, the SDK uses the Claude Code login on the machine, and the cost the run prints is an estimate rather than a bill. `MAX_BUDGET_USD` (default 4) is a hard stop for the whole run, and the cost is written to `out/run-summary.json`.
+
+</details>
+
+### Commands
 
 ```
-npm run run               # full run, then opens the page in a phone-size window for the screen recording
-npm run run -- --no-phone # same, without the final phone window
-npm run extract           # only capture the original (no Shopify, no API key needed)
-npm test                  # 70 tests
+npm run run               full run, then a phone-size window for screen recording
+npm run run -- --no-phone same, without the final window
+npm run extract           capture the original only (no Shopify, no API key)
+npm test                  71 tests
 npm run typecheck
 ```
 
-Output goes to `out/`: `nomore-landing.liquid` (the final section), `section-v1..n.liquid` (each version),
-`source/` (original screenshots + `source-brief.json`), `preview/` (screenshots and comparison strips),
-`report.json` (final checks), `run-summary.json` (uploads, diff history, API cost, preview URL).
+Output lands in `out/`: the final `nomore-landing.liquid`, every version, screenshots and comparison strips, `report.json` and `run-summary.json`.
+
+## Example output
+
+[`examples/nomore-landing.liquid`](examples/nomore-landing.liquid) is the section the agent produced in the run shown above, unedited.
 
 ## Tests
 
-`npm test` covers the linter (every rule, positive and negative), the template generator, the image
-comparison, config validation, the Shopify client (retries, throttling, auth errors, idempotent product
-upsert, client-credentials exchange), the theme-upload routes and the fallback between them, and the agent
-tools (rejected uploads reach Shopify never, stale screenshots are refused, the report fails honestly).
-The model call itself and the live Shopify store are not covered by tests: they need your keys.
+`npm test` covers the linter (every rule, positive and negative), the template generator, the image comparison, config validation, the Shopify client (retries, throttling, auth errors, idempotent product upsert, token exchange), both theme-upload routes and the fallback between them, and the agent tools. The model call and the live store need your keys, so they are not part of the tests.
 
 ## Known limits
 
-- The pixel comparison is a guide, not a proof: fonts, lazy images and animations can move a few percent.
-- The "first 3 sections" are chosen by position on the rendered page at 390 px, header and announcement bar
-  excluded. If the source site changes its layout the pick changes with it.
-- Behaviour is simplified, appearance is not: the original's bundle selection, cart logic and any app
-  integrations are not reproduced. Cards look like the original and add the placeholder product.
+- The pixel diff is a guide, not proof. Fonts, lazy images and animations can move a few percent.
+- "First 3 sections" are picked by position on the page rendered at 390px, header and announcement bar excluded. If the source site changes layout, the pick changes with it.
+- Behaviour is simplified, appearance is not: bundle cards look like the original and add the placeholder product, but the original's bundle logic and app integrations are not reproduced.
+
+<div align="center"><sub>Built with the Claude Agent SDK, Playwright, pixelmatch and liquidjs.</sub></div>

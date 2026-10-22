@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 470" font-family="Segoe UI, Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#101a30"/><stop offset="1" stop-color="#0b0f17"/></linearGradient>
+    <linearGradient id="acc" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5eead4"/><stop offset="1" stop-color="#60a5fa"/></linearGradient>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#60a5fa"/></marker>
+  </defs>
+  <rect width="1200" height="470" rx="22" fill="url(#bg)"/>
+  <rect x="0.5" y="0.5" width="1199" height="469" rx="22" fill="none" stroke="#223049"/>
+  <text x="48" y="64" font-size="26" font-weight="700" fill="#e8ecf4">How one run works</text>
+  <text x="48" y="92" font-size="14" fill="#8b97ad">The model decides what to change; only seven tools exist, so it cannot do anything else.</text>
+
+  <rect x="48" y="170" width="190" height="150" rx="16" fill="#121a29" stroke="#223049"/>
+  <text x="143" y="216" text-anchor="middle" font-size="12" fill="#8b97ad" letter-spacing="1.5">INPUT</text>
+  <text x="143" y="248" text-anchor="middle" font-size="18" font-weight="600" fill="#e8ecf4">Page URL</text>
+  <text x="143" y="276" text-anchor="middle" font-size="13" fill="#8b97ad">try-nomore.com</text>
+  <text x="143" y="296" text-anchor="middle" font-size="13" fill="#8b97ad">first 3 sections</text>
+
+  <rect x="300" y="140" width="250" height="210" rx="16" fill="#121a29" stroke="url(#acc)" stroke-width="1.6"/>
+  <text x="425" y="180" text-anchor="middle" font-size="12" fill="#5eead4" letter-spacing="1.5">CLAUDE AGENT SDK</text>
+  <text x="425" y="216" text-anchor="middle" font-size="19" font-weight="600" fill="#e8ecf4">query() loop</text>
+  <text x="425" y="246" text-anchor="middle" font-size="13" fill="#8b97ad">max 40 turns</text>
+  <text x="425" y="268" text-anchor="middle" font-size="13" fill="#8b97ad">hard budget cap</text>
+  <text x="425" y="290" text-anchor="middle" font-size="13" fill="#8b97ad">upload limit via PreToolUse hook</text>
+  <text x="425" y="324" text-anchor="middle" font-size="13" fill="#f59e0b">no shell · no files · no web</text>
+
+  <g font-size="14" fill="#e8ecf4">
+    <rect x="612" y="110" width="270" height="34" rx="9" fill="#121a29" stroke="#223049"/><text x="630" y="132">inspect_source</text>
+    <rect x="612" y="152" width="270" height="34" rx="9" fill="#121a29" stroke="#223049"/><text x="630" y="174">screenshot_preview</text>
+    <rect x="612" y="194" width="270" height="34" rx="9" fill="#121a29" stroke="#223049"/><text x="630" y="216">compare_preview</text>
+    <rect x="612" y="236" width="270" height="34" rx="9" fill="#121a29" stroke="#223049"/><text x="630" y="258">verify_final</text>
+    <rect x="612" y="278" width="270" height="34" rx="9" fill="#121a29" stroke="#223049"/><text x="630" y="300">get_theme_state</text>
+    <rect x="612" y="320" width="270" height="34" rx="9" fill="#121a29" stroke="#223049"/><text x="630" y="342">create_placeholder_product</text>
+    <rect x="612" y="362" width="270" height="34" rx="9" fill="#12231f" stroke="#2c6a5c"/><text x="630" y="384" fill="#5eead4">write_section  ·  lint first</text>
+  </g>
+
+  <rect x="944" y="110" width="208" height="76" rx="16" fill="#121a29" stroke="#223049"/>
+  <text x="1048" y="142" text-anchor="middle" font-size="12" fill="#8b97ad" letter-spacing="1.5">BROWSER</text>
+  <text x="1048" y="168" text-anchor="middle" font-size="16" font-weight="600" fill="#e8ecf4">Playwright @ 390px</text>
+  <rect x="944" y="278" width="208" height="118" rx="16" fill="#121a29" stroke="#223049"/>
+  <text x="1048" y="326" text-anchor="middle" font-size="12" fill="#8b97ad" letter-spacing="1.5">SHOPIFY</text>
+  <text x="1048" y="354" text-anchor="middle" font-size="16" font-weight="600" fill="#e8ecf4">Admin API · dev store</text>
+
+  <path d="M238 245 H298" stroke="#60a5fa" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+  <path d="M550 245 H610" stroke="#60a5fa" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+  <path d="M884 148 H942" stroke="#60a5fa" stroke-width="1.8" fill="none" marker-end="url(#arr)"/>
+  <path d="M884 337 H942" stroke="#60a5fa" stroke-width="1.8" fill="none" marker-end="url(#arr)"/>
+
+  <path d="M425 350 V438 H1040" stroke="#5eead4" stroke-width="1.6" stroke-dasharray="6 6" fill="none"/>
+  <text x="470" y="430" font-size="13" fill="#5eead4">upload → screenshot → pixel diff → fix the worst band → repeat until the diff is at or below 8%</text>
+</svg>
