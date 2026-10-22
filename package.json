@@ -1,0 +1,29 @@
+{
+  "name": "nomore-shopify-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Claude Agent SDK script that rebuilds the first 3 sections of a Shopify landing page as one editable Liquid section.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "extract": "tsx src/cli.ts extract",
+    "run": "tsx src/cli.ts run"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.3.308",
+    "liquidjs": "^10.30.0",
+    "pixelmatch": "^8.0.0",
+    "playwright": "^1.64.1",
+    "pngjs": "^7.0.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/pixelmatch": "^5.2.6",
+    "@types/pngjs": "^6.0.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  }
+}

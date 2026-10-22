@@ -1,0 +1,82 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  #shopify-section-{{ section.id }} [data-nomore-root] { background: {{ section.settings.background }}; padding: 60px 16px; }
+  #shopify-section-{{ section.id }} .nm-stat { font-size: clamp(60px, 14vw, 200px); }
+</style>
+
+<div data-nomore-root>
+  <h1>{{ section.settings.heading }}</h1>
+  {%- if section.settings.image != blank -%}
+    <img src="{{ section.settings.image | image_url: width: 800 }}" alt="{{ section.settings.image_alt }}" width="400" height="400">
+  {%- elsif section.settings.image_fallback_url != blank -%}
+    <img src="{{ section.settings.image_fallback_url }}" alt="{{ section.settings.image_alt }}" width="400" height="400">
+  {%- endif -%}
+
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'review' -%}
+        <blockquote {{ block.shopify_attributes }}>
+          <p>{{ block.settings.quote }}</p>
+          <cite>{{ block.settings.author }}</cite>
+        </blockquote>
+      {%- when 'stat' -%}
+        <div class="nm-stat" data-target="{{ block.settings.value }}" {{ block.shopify_attributes }}>{{ block.settings.value }}{{ block.settings.suffix }}</div>
+    {%- endcase -%}
+  {%- endfor -%}
+
+  {%- form 'product', product -%}
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    <button type="submit">{{ section.settings.button_label }}</button>
+  {%- endform -%}
+</div>
+
+<script>
+  document.querySelectorAll('[data-nomore-root] .nm-stat').forEach(function (el) {
+    el.dataset.ready = '1';
+  });
+</script>
+
+{% schema %}
+{
+  "name": "NoMore landing",
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Are you struggling with colds?" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "image_fallback_url", "label": "Image URL fallback", "default": "https://cdn.example.com/img.png" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "Device in use" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Add to cart" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "Works great." },
+        { "type": "text", "id": "author", "label": "Author", "default": "Maria" }
+      ]
+    },
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value", "default": "100" },
+        { "type": "text", "id": "suffix", "label": "Suffix", "default": "%" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "NoMore landing",
+      "settings": { "heading": "Are you struggling with colds?" },
+      "blocks": [
+        { "type": "review", "settings": { "quote": "Works great.", "author": "Maria" } },
+        { "type": "review", "settings": { "quote": "Sleeping better.", "author": "Joe" } },
+        { "type": "stat", "settings": { "value": "100", "suffix": "%" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
